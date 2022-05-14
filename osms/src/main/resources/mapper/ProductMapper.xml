@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.ProductMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Product">
+        <id column="id" property="id" />
+        <result column="seller_id" property="sellerId" />
+        <result column="brand_id" property="brandId" />
+        <result column="category_id" property="categoryId" />
+        <result column="name" property="name" />
+        <result column="describ" property="describ" />
+        <result column="status" property="status" />
+        <result column="createtime" property="createtime" />
+        <result column="updatetime" property="updatetime" />
+        <result column="is_deleted" property="deleted" />
+    </resultMap>
+    <insert id="addStore">
+        insert into osms_favorite(user_id,product_id) values (#{userid},#{pid})
+    </insert>
+    <delete id="cancelStore">
+        delete from osms_favorite where user_id = #{userid} and product_id = #{pid}
+    </delete>
+    <select id="selectBySellerId" resultType="java.util.Map">
+        select osms_product.id,url,osms_product.name from osms_seller,osms_product, osms_image
+        where osms_product.is_deleted <![CDATA[<>]]> 1
+        and osms_seller.id = osms_product.seller_id
+        and osms_product.id = osms_image.product_id
+        and osms_seller.id = #{id}
+    </select>
+    <resultMap id="ProductInfoMap" type="com.example.mybatisplus.model.domain.Product" extends="BaseResultMap">
+        <collection property="images" ofType="com.example.mybatisplus.model.domain.Image">
+            <id column="iid" property="id" />
+            <result column="product_id" property="productId" />
+            <result column="url" property="url" />
+        </collection>
+        <collection property="specs" ofType="com.example.mybatisplus.model.domain.Specification">
+            <id column="sid" property="id" />
+            <result column="sname" property="name" />
+            <result column="product_id" property="productId" />
+            <result column="img" property="img" />
+            <result column="size" property="size" />
+            <result column="price" property="price" />
+            <result column="stock" property="stock" />
+        </collection>
+    </resultMap>
+    <select id="getProductInfoByID" resultMap="ProductInfoMap">
+        select *,osms_specification.id as sid,osms_specification.name as sname,osms_image.id as iid,osms_product.seller_id as sellerId
+        from osms_product,osms_specification,osms_image
+        where osms_product.is_deleted &lt;&gt; 1 and osms_product.id=#{id}
+        and osms_product.id=osms_specification.product_id and osms_product.id=osms_image.product_id
+    </select>
+    <select id="getProductInfoByCategoryID" resultType="java.util.Map">
+        select osms_product.id,osms_product.name,url,
+               osms_category.id as categoryId,min(price) as minprice,
+               max(price) as maxprice from osms_product
+                join osms_category on category_id=osms_category.id
+                join osms_image on osms_image.product_id=osms_product.id
+                join osms_specification on osms_specification.product_id=osms_product.id
+        where osms_product.is_deleted &lt;&gt; 1 and osms_category.id=#{id} group by osms_product.id;
+    </select>
+
+    <select id="getProductDetailByID" resultType="java.util.Map">
+       select osms_specification.id as specification_id,osms_product.id as product_id,seller_id,osms_product.name as product_name,size,price,url,osms_seller.name,osms_product.describ
+            from osms_product
+            join osms_specification on osms_product.id=osms_specification.product_id
+            join osms_seller on seller_id=osms_seller.id
+            join osms_image on osms_image.product_id=osms_product.id
+       where osms_product.is_deleted <![CDATA[<>]]> 1 and osms_product.id=#{id};
+    </select>
+    <select id="searchProductByKeyWord" resultType="java.util.Map">
+        select osms_product.id,osms_product.name,url,osms_category.id as categoryId,
+               min(price) as minprice,max(price) as maxprice from osms_product
+                   join osms_category on category_id=osms_category.id
+                   join osms_image on osms_image.product_id=osms_product.id
+                   join osms_specification on osms_specification.product_id=osms_product.id
+        where osms_product.is_deleted <![CDATA[<>]]> 1 and osms_product.name like CONCAT('%',#{keyword},'%') group by osms_product.id
+    </select>
+    <select id="getProductListByCidAndSid" resultType="java.util.Map">
+        select osms_product.id,osms_product.name,url,
+        osms_category.id as categoryId from osms_product
+        join osms_seller on osms_seller.id=osms_product.seller_id
+        join osms_category on category_id=osms_category.id
+        join osms_image on osms_image.product_id=osms_product.id
+        where osms_product.is_deleted &lt;&gt; 1 and osms_seller.id=#{sid} and osms_category.id=#{cid} group by osms_product.id;
+    </select>
+    <select id="hasStored" resultType="java.lang.Long">
+        select osms_favorite.id from osms_favorite where user_id = #{userId} and product_id = #{pId}
+    </select>
+
+    <select id="getfavoriteGoodsList" resultType="java.util.Map">
+        select E.id,E.img as url,E.`name`, min(osms_specification.price) as minprice, max(osms_specification.price) as maxprice, E.typeId
+        from osms_specification,(select D.id,D.cid as typeId,osms_image.url as img ,D.`name` as name
+        from osms_image,(select * from (select *, ROW_NUMBER() OVER (PARTITION BY cid  ORDER BY num DESC) row_num
+        FROM (select osms_product.id as id,osms_product.category_id as cid, A.num,osms_product.`name`
+        from osms_product,(select osms_favorite.product_id as pid, count(*) as num
+        from osms_favorite group by osms_favorite.product_id) as A
+        where osms_product.id = A.pid and osms_product.is_deleted = 0 group by osms_product.id) as B) as C
+        where row_num &lt;=7) as D where osms_image.product_id = D.id) as E
+        where osms_specification.product_id = E.id group by osms_specification.product_id order by E.typeId
+    </select>
+    <select id="getNewGoodsList" resultType="java.util.Map">
+        select C.id,C.img as url,C.`name`,C.typeId,max(osms_specification.price) as maxprice, min(osms_specification.price) as minprice
+        from osms_specification,(select B.id,B.typeId,B.`name`,osms_image.url as img from osms_image,(select id,typeId,A.`name`
+        from (select id,category_id as typeId, osms_product.`name`,createtime,row_number() over(partition by category_id order by createtime desc) as row_num
+        from osms_product where is_deleted=0) as A where A.row_num&lt;=4) as B
+        where osms_image.product_id = B.id) as C where osms_specification.product_id=C.id group by  osms_specification.product_id order by C.id
+    </select>
+    <select id="getGoodsListBybid" resultType="java.util.Map">
+        SELECT osms_product.id,osms_image.url,osms_product.name,min(price) as minprice,max(price) as maxprice
+        from  osms_product join osms_specification on osms_product.id=osms_specification.product_id join osms_image on osms_product.id=osms_image.product_id
+        where osms_product.is_deleted &lt;&gt; 1 AND osms_product.brand_id=#{id} group by osms_product.id
+    </select>
+    <select id="getAllProductInfo" resultType="java.util.Map">
+        select osms_product.id,osms_product.name,url,
+               osms_category.id as categoryId,min(price) as minprice,
+               max(price) as maxprice from osms_product
+            join osms_category on category_id=osms_category.id
+            join osms_image on osms_image.product_id=osms_product.id
+            join osms_specification on osms_specification.product_id=osms_product.id
+        where osms_product.is_deleted &lt;&gt; 1 group by osms_product.id;
+    </select>
+    <select id="getProductStock" resultType="java.util.Map">
+        select osms_specification.id,stock from osms_product join osms_specification on osms_product.id=product_id where osms_product.id=#{id}
+    </select>
+</mapper>

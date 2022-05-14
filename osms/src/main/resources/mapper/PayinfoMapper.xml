@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.PayinfoMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Payinfo">
+        <id column="id" property="id" />
+        <result column="order_id" property="orderId" />
+        <result column="status" property="status" />
+        <result column="postage" property="postage" />
+        <result column="payment" property="payment" />
+        <result column="platform" property="platform" />
+        <result column="paymenttype" property="paymenttype" />
+        <result column="paymenttime" property="paymenttime" />
+    </resultMap>
+
+</mapper>

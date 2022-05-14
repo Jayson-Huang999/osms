@@ -1,0 +1,65 @@
+spring:
+  redis:
+    host: localhost
+    password:
+    port: 6379
+    jedis:
+      pool:
+        max-active: 50
+        max-idle: 8
+        min-idle: 2
+      database: 0
+  cloud:
+    sentinel:
+      transport:
+        port: 8719
+        dashboard:
+          localhost:8080
+
+  mail:
+    host: smtp.qq.com
+    username: 2508664769@qq.com
+    password: lmsuwgikkvgbdjcf
+    port: 587
+    default-encoding: UTF-8
+    properties:
+      mail:
+        #配置SSL 加密工厂
+        smtp:
+          ssl:
+            #本地测试，先放开ssl
+            enable: false
+            required: false
+          #开启debug模式，这样邮件发送过程的日志会在控制台打印出来，方便排查错误
+        debug: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/osms?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+    username: root
+    password: 20011112tyl
+  jackson:
+    date-format: yyyy-MM-dd hh:mm:ss
+    time-zone: GMT+8
+    #   返回时间戳
+  mvc:
+    format:
+      date: yyyy-MM-dd
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${file-upload-path}
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+  port: 8888
+
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml, classpath:/mybatis/mapper/extend/*.xml
+
+logging:
+  level:
+    com.example.mybatisplus.mapper: debug
+file-upload-path: ./file

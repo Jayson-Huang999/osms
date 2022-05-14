@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.FavoriteMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Favorite">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="product_id" property="productId" />
+    </resultMap>
+    <select id="getFavoriteProducts" resultType="java.util.Map">
+        select osms_favorite.id as favorite_id,osms_product.id as product_id,osms_product.name,min(price) as minprice,max(price) as maxprice,describ,url
+        from osms_favorite join osms_product on osms_favorite.product_id=osms_product.id join osms_specification on osms_product.id=osms_specification.product_id join osms_image on osms_product.id=osms_image.product_id where osms_product.is_deleted &lt;&gt; 1 and user_id=#{user_id} group by osms_product.id
+    </select>
+</mapper>

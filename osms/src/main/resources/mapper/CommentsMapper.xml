@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.CommentsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Comments">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="product_id" property="productId" />
+        <result column="specification_id" property="specificationId" />
+        <result column="order_id" property="orderId" />
+        <result column="content" property="content" />
+        <result column="score" property="score" />
+        <result column="createtime" property="createtime" />
+    </resultMap>
+    <!--<insert id="sendComment">-->
+        <!--INSERT INTO osms_comments VALUES(NULL,#{clienId},#{goodsId},#{goodsDetailId},#{orderId},#{content},#{score},NULL);-->
+    <!--</insert>-->
+    <select id="getComment" resultType="java.util.Map">
+        SELECT osms_user.headimage,osms_user.nickname,osms_comments.score,osms_specification.`name`,osms_comments.content,osms_comments.createtime
+        FROM osms_comments,osms_user,osms_specification
+        WHERE osms_comments.user_id = osms_user.id
+        AND osms_comments.specification_id = osms_specification.id
+        AND osms_comments.product_id = #{id} order by osms_comments.createtime DESC;
+    </select>
+</mapper>

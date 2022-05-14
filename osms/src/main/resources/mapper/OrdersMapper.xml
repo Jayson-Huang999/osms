@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.OrdersMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Orders">
+        <id column="id" property="id" />
+        <result column="address_id" property="addressId" />
+        <result column="specification_id" property="specificationId" />
+        <result column="user_id" property="userId" />
+        <result column="status" property="status" />
+        <result column="quantity" property="quantity" />
+        <result column="preferentialprice" property="preferentialprice" />
+        <result column="totalprice" property="totalprice" />
+        <result column="createtime" property="createtime" />
+    </resultMap>
+    <update id="ordersMapper" parameterType="java.util.List">
+        update osms_orders set osms_orders.status=2 where id in
+        <foreach collection="orderIds" item="item" index="index" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </update>
+    <select id="getOrders" resultType="java.util.Map">
+       select osms_orders.id as order_id,osms_product.id as product_id,osms_seller.id as seller_id,osms_specification.id as specification_id,osms_seller.name as seller_name,osms_product.name as product_name,size,quantity,price,osms_specification.img as url,preferentialprice,totalprice,osms_orders.status,osms_orders.createtime,osms_specification.name as specification_name
+       from osms_orders join osms_specification on specification_id=osms_specification.id join osms_product on osms_specification.product_id=osms_product.id join osms_seller on seller_id=osms_seller.id join osms_image on osms_product.id=osms_image.product_id where user_id=#{user_id} and osms_orders.status=#{status} order by osms_orders.createtime DESC;
+    </select>
+    <select id="getOrdersDetail" resultType="java.util.Map">
+       select osms_orders.id as order_id,osms_product.id as product_id,specification_id,address_id,osms_seller.id as seller_id,osms_seller.name as seller_name,receivername,receiverphone,receiverprovince,receivercity,receiverdistrict,receiveraddress,osms_product.name as product_name,price,quantity,size,preferentialprice,totalprice,osms_specification.name as specName,osms_specification.img as url,osms_orders.status,osms_orders.createtime
+       from osms_orders join osms_specification on osms_orders.specification_id=osms_specification.id join osms_product on osms_specification.product_id=osms_product.id join osms_seller on seller_id=osms_seller.id join osms_image on osms_image.product_id=osms_product.id join osms_address on osms_address.id=osms_orders.address_id where osms_orders.id=#{order_id};
+    </select>
+    <select id="selectOrdersBySellerIdAndStatus" resultType="java.util.Map">
+        SELECT osms_orders.id,osms_user.username,osms_address.receivername,osms_address.receiveraddress,osms_address.receiverphone,osms_product.name,osms_specification.name as specName,osms_specification.size,osms_orders.quantity,osms_orders.totalprice,osms_orders.status,osms_orders.createtime as time
+        FROM osms_orders,osms_user,osms_address,osms_specification,osms_product,osms_seller
+        WHERE osms_seller.id = osms_product.seller_id
+        AND osms_product.id = osms_specification.product_id
+        AND osms_specification.id = osms_orders.specification_id
+        AND osms_orders.address_id = osms_address.id
+        AND osms_address.user_id = osms_user.id
+        AND osms_seller.id = #{id}
+        AND osms_orders.status = #{status} order by osms_orders.createtime DESC
+    </select>
+    <select id="selectOrdersBySellerId" resultType="java.util.Map">
+        SELECT osms_orders.id,osms_user.username,osms_address.receivername,osms_address.receiveraddress,osms_address.receiverphone,osms_product.name,osms_specification.name as specName,osms_specification.size,osms_orders.quantity,osms_orders.totalprice,osms_orders.status,osms_orders.createtime as time
+        FROM osms_orders,osms_user,osms_address,osms_specification,osms_product,osms_seller
+        WHERE osms_seller.id = osms_product.seller_id
+          AND osms_product.id = osms_specification.product_id
+          AND osms_specification.id = osms_orders.specification_id
+          AND osms_orders.address_id = osms_address.id
+          AND osms_address.user_id = osms_user.id
+          AND osms_seller.id = #{id} order by osms_orders.createtime DESC
+    </select>
+    <select id="getOrdersByUserId" resultType="java.util.Map">
+        select osms_orders.id as order_id,osms_product.id as product_id,osms_seller.id as seller_id,osms_specification.id as specification_id,osms_seller.name as seller_name,osms_product.name as product_name,size,quantity,price,osms_specification.img as url,preferentialprice,totalprice,osms_orders.status,osms_orders.createtime,osms_specification.name as specification_name
+        from osms_orders join osms_specification on specification_id=osms_specification.id join osms_product on osms_specification.product_id=osms_product.id join osms_seller on seller_id=osms_seller.id join osms_image on osms_product.id=osms_image.product_id where user_id=#{user_id} order by osms_orders.createtime DESC;
+    </select>
+    <select id="getUserInfo" resultType="java.lang.Long">
+    SELECT osms_orders.user_id FROM osms_orders,osms_specification
+    WHERE osms_orders.specification_id = osms_specification.id
+    AND osms_specification.product_id = #{id}
+    AND osms_orders.`status` = 9
+    </select>
+</mapper>

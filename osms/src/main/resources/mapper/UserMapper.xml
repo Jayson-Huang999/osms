@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.User">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="nickname" property="nickname" />
+        <result column="sex" property="sex" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="headimage" property="headimage" />
+        <result column="role" property="role" />
+        <result column="score" property="score" />
+        <result column="level" property="level" />
+        <result column="createtime" property="createtime" />
+        <result column="updatetime" property="updatetime" />
+        <result column="is_deleted" property="deleted"/>
+    </resultMap>
+    <insert id="addUser">
+        insert into osms_user(username,password,phone,email,role,score,level,createtime,
+                              is_deleted,nickname) values (#{username},#{password},#{phone},#{email}, 1, 0, 0, #{createtime},0,#{nickname})
+    </insert>
+    <update id="updateMessage">
+        update osms_user set headimage = #{image}, sex = #{sex}, updatetime = #{dateTime}, nickname = #{nickname}, phone = #{phone}, username = #{username} where id = #{id}
+    </update>
+    <update id="updatePhone">
+        update osms_user set phone = #{phone}, updatetime = #{dateTime} where id = #{id}
+    </update>
+    <update id="updateEmail">
+        update osms_user set email = #{email}, updatetime = #{dateTime} where id = #{id}
+    </update>
+    <update id="updateLoginInfo">
+        update osms_user set password = #{password} , updatetime = #{dateTime} where id = #{id}
+    </update>
+    <update id="removeById">
+        update osms_user set is_deleted = 1 where id = #{id}
+    </update>
+    <update id="updateUserScore">
+        update osms_user set score=score+#{score} where id=#{user_id}
+    </update>
+    <select id="hasPhone" resultType="java.lang.String">
+        select phone from osms_user where phone = #{phone} and is_deleted = 0
+    </select>
+    <select id="hasEmail" resultType="java.lang.String">
+        select email from osms_user where email = #{email} and is_deleted = 0
+    </select>
+    <select id="hasUserName" resultType="java.lang.String">
+        select username from osms_user where username = #{username} and is_deleted = 0
+    </select>
+    <select id="login" resultType="java.lang.Long">
+        select id from osms_user where phone = #{phone} and password = #{password} and is_deleted = 0
+    </select>
+    <select id="getInfoByPhone" resultType="java.util.Map">
+        select username,password from osms_user where phone = #{phone} and is_deleted = 0
+    </select>
+    <select id="getInfoByEmail" resultType="java.util.Map">
+        select id,username from osms_user where email = #{email} and is_deleted = 0
+    </select>
+
+
+</mapper>

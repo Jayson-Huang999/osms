@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.CartProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.CartProduct">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="specification_id" property="specificationId" />
+        <result column="quantity" property="quantity" />
+    </resultMap>
+    <select id="getCartProducts" resultType="java.util.Map">
+        select osms_cart_product.id as cart_id,specification_id,osms_product.id as product_id,quantity,price,size,osms_product.name as product_name,osms_specification.img as url,seller_id,osms_seller.name as seller_name,quantity*price as amount,osms_specification.name as specification_name
+        from osms_cart_product join osms_specification on specification_id=osms_specification.id join osms_product on osms_specification.product_id=osms_product.id join osms_seller on seller_id=osms_seller.id join osms_image on osms_product.id=osms_image.product_id
+        where osms_cart_product.user_id=#{user_id}
+    </select>
+
+</mapper>
