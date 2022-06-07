@@ -13,6 +13,8 @@
         <result column="remain" property="remain" />
         <result column="status" property="status" />
     </resultMap>
+
+
     <update id="kill">
         update osms_activity set remain=#{stock} where product_id = #{id} and timestamp &lt; #{timeStamp}
     </update>
@@ -21,7 +23,7 @@
     </update>
     <select id="getActivityProducts" resultType="java.util.Map">
         select osms_activity.id as activity_id,osms_product.id as product_id,osms_product.name,preferentiallevel,osms_image.url,min(price) as minprice,max(price) as maxprice,remain,osms_activity.quantity,starttime,endtime
-        from osms_activity join osms_product on osms_activity.product_id=osms_product.id join osms_image on osms_product.id=osms_image.product_id join osms_specification on osms_product.id=osms_specification.product_id where osms_activity.status =1 group by osms_product.id
+        from osms_activity join osms_product on osms_activity.product_id=osms_product.id join osms_image on osms_product.id=osms_image.product_id join osms_specification on osms_product.id=osms_specification.product_id where osms_activity.status =1 group by osms_activity.id
     </select>
     <select id="getProductInfo" resultType="java.util.Map">
         SELECT osms_activity.endtime,osms_activity.remain FROM osms_activity

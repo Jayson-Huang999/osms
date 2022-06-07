@@ -20,7 +20,6 @@ public class MD5Utils {
         return resultString;
     }
 
-
     /**
      * MD5加密后解密(一定要KL（）再用KL（）解密)
      * MD5是不可逆，这里的加密解密，你可以看到是对MD5算法先加密后解密，而不是对MD5的解密

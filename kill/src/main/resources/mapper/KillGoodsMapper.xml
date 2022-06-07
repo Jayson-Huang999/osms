@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.KillGoodsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.KillGoods">
+        <id column="id" property="id" />
+        <result column="product_id" property="productId" />
+        <result column="activity_id" property="activityId" />
+        <result column="specification_id" property="specificationId" />
+        <result column="stock" property="stock" />
+        <result column="price" property="price" />
+    </resultMap>
+    <update id="decrementStock">
+        update osms_kill_goods set stock=stock-1 where id=#{goodsId}
+    </update>
+    <update id="incrementStock">
+        update osms_kill_goods set stock=stock+1 where id=#{goodsId}
+    </update>
+    <select id="getGoodsInfo" resultType="java.util.Map">
+        select osms_kill_goods.id as id,osms_kill_goods.stock,osms_kill_goods.price from osms_kill_goods,osms_activity where osms_kill_goods.activity_id=osms_activity.id and osms_activity.status=1
+    </select>
+    <select id="getGoodsStock" resultType="java.lang.Long">
+        select stock from osms_kill_goods where id=#{goodsId}
+    </select>
+
+</mapper>

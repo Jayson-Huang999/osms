@@ -11,35 +11,7 @@
                 <div class="cart-header-content">
                     <p>确认订单</p>
                 </div>
-                <!--<div class="cart-header-right">-->
-                    <!--<div class="cart-header-select">-->
-                        <!--<el-dropdown>-->
-                            <!--<router-link to class="href">-->
-                                <!--<span style="margin-right:5px">{{this.$store.getters.getUser.nickname}}</span>-->
-                                <!--<i class="el-icon-caret-bottom"></i>-->
-                            <!--</router-link>-->
-                            <!--<el-dropdown-menu slot="dropdown">-->
-                                <!--<router-link to="/">-->
-                                    <!--<el-dropdown-item class="dropdown-menu">首页</el-dropdown-item>-->
-                                <!--</router-link>-->
-                                <!--<router-link to="/center">-->
-                                    <!--<el-dropdown-item class="dropdown-menu">个人中心</el-dropdown-item>-->
-                                <!--</router-link>-->
-                                <!--<router-link to="/">-->
-                                    <!--<el-dropdown-item class="dropdown-menu">评价晒单</el-dropdown-item>-->
-                                <!--</router-link>-->
-                                <!--<router-link to="/favorite">-->
-                                    <!--<el-dropdown-item class="dropdown-menu">我的收藏</el-dropdown-item>-->
-                                <!--</router-link>-->
-                            <!--</el-dropdown-menu>-->
-                        <!--</el-dropdown>-->
-                    <!--</div>-->
 
-                    <!--<div class="cart-header-order">-->
-                        <!--<span>|</span>-->
-                        <!--<router-link to="/order" class="href">我的订单</router-link>-->
-                    <!--</div>-->
-                <!--</div>-->
             </div>
         </div>
         <!-- 头部END -->
@@ -191,11 +163,7 @@
 <script>
     import { mapState } from 'vuex';
     import {getAddresses,generateOrders,addAddress,removeFromCart,updateSpecificationStock,updateActivityRemain,getUserData} from "../../api/client";
-    // import { mapGetters } from 'vuex'
-    // import { mapActions } from 'vuex'
-    // import * as addressesAPI from '@/api/addresses'
-    // import * as ordersAPI from '@/api/orders'
-    // import * as cartsAPI from '@/api/carts'
+
     export default {
         name: 'OrderConfirm',
         computed:{
@@ -310,21 +278,6 @@
                 this.$router.go(-1);
             },
             getAddresses() {
-                // addressesAPI
-                //     .showAddresses(this.$store.getters.getUser.id)
-                //     .then(res => {
-                //         if (res.status === 200) {
-                //             this.address = res.data
-                //         } else if (res.status === 20001) {
-                //             //token过期，需要重新登录
-                //             this.loginExpired(res.msg)
-                //         } else {
-                //             this.notifyError('获取收货地址失败', res.msg)
-                //         }
-                //     })
-                //     .catch(err => {
-                //         this.notifyError('获取收货地址失败', err)
-                //     })
                 getAddresses(this.clientId,this.clientToken)
                     .then(res => {
                         this.address = res;
@@ -358,10 +311,7 @@
                         preferentialprice:parseFloat(this.preferentialprice+this.totalprice*(1-this.membership)).toFixed(2),
                         totalprice:parseFloat(this.totalprice*this.membership).toFixed(2),
                         createtime:null
-                        // user_id: this.$store.getters.getUser.id,
-                        // product_id: orders[i].product_id,
-                        // num: orders[i].num,
-                        // address_id: this.confirmAddress
+
                     });
                     stockList.push({
                         specification_id:this.checkGoods[i].specification_id,
@@ -390,10 +340,6 @@
                                 }
                               })
                             })
-                        // this.orderList=tempOrderList;
-                        // const res = removeFromCart({"data":idList});
-                        //this.orderList = [];
-                        // const res = removeFromCart({"data":idList});
                       this.$router.push({
                         path: '/mall/payment',
                         query: {
@@ -413,45 +359,6 @@
                     .catch((e)=>{
                         alert(e);
                     })
-                    // ordersAPI
-                    //     .postOrder(form)
-                    //     .then(res => {
-                    //         if (res.status === 200) {
-                    //             const temp = orders[i]
-                    //             // 删除已经结算的购物车商品
-                    //             var form1 = {
-                    //                 user_id: this.$store.getters.getUser.id,
-                    //                 product_id: temp.product_id
-                    //             }
-                    //             cartsAPI
-                    //                 .deleteCart(form1)
-                    //                 .then(res => {
-                    //                     if (res.status === 200) {
-                    //                         // 更新vuex状态
-                    //                         this.deleteShoppingCart(temp.product_id)
-                    //                     } else if (res.status === 20001) {
-                    //                         //token过期，需要重新登录
-                    //                         this.loginExpired(res.msg)
-                    //                     } else {
-                    //                         this.notifyError('购物车删除失败', res.msg)
-                    //                     }
-                    //                 })
-                    //                 .catch(err => {
-                    //                     this.notifyError('购物车删除失败', err)
-                    //                 })
-                    //             // 跳转我的订单页面
-                    //             this.$router.push({ path: '/order' })
-                    //             this.notifySucceed('未付款的订单将于15分钟后删除')
-                    //         } else if (res.status === 20001) {
-                    //             //token过期，需要重新登录
-                    //             this.loginExpired(res.msg)
-                    //         } else {
-                    //             this.notifyError('结算失败', res.msg)
-                    //         }
-                    //     })
-                    //     .catch(err => {
-                    //         this.notifyError('结算失败', err)
-                    //     })
             },
             addAddress() {
               if(this.form.receiverdistrict==null){
@@ -468,24 +375,7 @@
                   .catch(err => {
                     this.notifyError('新建收货地址失败', err)
                   })
-                // this.form.user_id = this.$store.getters.getUser.id
-                // addressesAPI
-                //     .postAddress(this.form)
-                //     .then(res => {
-                //         if (res.status === 200) {
-                //             this.address = res.data
-                //             this.addVisible = false
-                //             this.notifySucceed('新建收货地址成功')
-                //         } else if (res.status === 20001) {
-                //             //token过期，需要重新登录
-                //             this.loginExpired(res.msg)
-                //         } else {
-                //             this.notifyError('新建收货地址失败', res.msg)
-                //         }
-                //     })
-                //     .catch(err => {
-                //         this.notifyError('新建收货地址失败', err)
-                //     })
+
             }
         },
         mounted(){

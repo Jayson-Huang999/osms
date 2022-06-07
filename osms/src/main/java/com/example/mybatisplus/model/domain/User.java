@@ -34,6 +34,8 @@ public class User extends Model<User> {
 
     private String password;
 
+    private String salt;
+
     private String nickname;
 
     private Boolean sex;

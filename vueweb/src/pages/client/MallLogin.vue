@@ -143,7 +143,7 @@ export default {
           url: "/api/user/findPwd",
           data: {
             id:this.id,
-            password:this.password
+            password:"12"+this.password+"89"
           }}).then(res =>{
           console.info(res.data.data.msg)
           this.password = '';
@@ -162,7 +162,7 @@ export default {
         contentType: 'application/json',
         data: {
           username: this.username,
-          password: this.password,
+          password: "12"+this.password+"89",
           nickname: this.nickname,
           phone: this.phone,
           email: this.email,
@@ -261,7 +261,7 @@ export default {
           url: "api/user/login",
           data: {
             phone: this.phone,
-            password: this.password
+            password: "12"+this.password+"89"
           }}).then(res => {
           console.info(res.data)
           if (res.data!= null) {

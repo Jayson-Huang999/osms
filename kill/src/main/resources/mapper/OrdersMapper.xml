@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.OrdersMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Orders">
+        <id column="id" property="id" />
+        <result column="address_id" property="addressId" />
+        <result column="specification_id" property="specificationId" />
+        <result column="user_id" property="userId" />
+        <result column="status" property="status" />
+        <result column="quantity" property="quantity" />
+        <result column="preferentialprice" property="preferentialprice" />
+        <result column="totalprice" property="totalprice" />
+        <result column="createtime" property="createtime" />
+    </resultMap>
+    <insert id="addOrder">
+        insert into osms_orders(id,address_id,specification_id,user_id,status,quantity,preferentialprice,totalPrice,createtime)
+        values (#{id},#{addressId},#{specId},#{userId},1,1,0.00,#{price},#{now})
+    </insert>
+
+</mapper>

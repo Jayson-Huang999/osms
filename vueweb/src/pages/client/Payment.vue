@@ -1,10 +1,3 @@
-<!--
- * @Descripttion: 登录页面组件
- * @Author: congz
- * @Date: 2020-06-11 11:08:34
- * @LastEditors: congz
- * @LastEditTime: 2020-08-18 23:15:35
---> 
 
 <template>
   <div class="payment">
@@ -18,14 +11,14 @@
             <span>温馨提示:您的支付会用作捐赠，不会发货</span>
             <p>注意：微信和支付宝支付功能还未完善</p>
           </div>
-          <el-form :model="form" :rules="rules" ref="form" label-width="100px" class="payment-form">
+<!--          <el-form :model="form" :rules="rules" ref="form" label-width="100px" class="payment-form">
             <el-form-item label="捐赠金额" prop="amount">
               <el-select v-model="form.amount" placeholder="请选择捐赠金额">
                 <el-option label="￥1 谢谢老板" value="1"></el-option>
                 <el-option label="￥10 感谢您的捐赠" value="10"></el-option>
               </el-select>
             </el-form-item>
-          </el-form>
+          </el-form>-->
           <div class="payment-paytype-header">
             <span>支付方式</span>
           </div>

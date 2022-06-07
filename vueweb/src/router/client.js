@@ -8,6 +8,7 @@ import MallShow from '@/pages/client/MallShow';
 import MallIndex from '@/pages/client/MallIndex';
 import MallLogin from '@/pages/client/MallLogin';
 import GoodsDetail from '@/pages/client/GoodsDetail';
+import KillGoodsDetail from '@/pages/client/KillGoodsDetail';
 import GoodsList from '@/pages/client/GoodsList';
 import Personal from '@/pages/client/Personal';
 import MyOrder from '@/pages/client/MyOrder';
@@ -18,6 +19,7 @@ import favorite from '@/pages/client/favorite';
 import myAddress from '@/pages/client/myAddress';
 import Qs from 'qs'
 import OrderConfirm from '@/pages/client/OrderConfirm'
+import KillOrderConfirm from '@/pages/client/KillOrderConfirm'
 import Payment from '@/pages/client/Payment'
 /*
 解决vue-router报NavigationDuplicated: Avoided redundant navigation to current location 的问题
@@ -68,9 +70,21 @@ let router = new Router({
           name: 'GoodsDetail',
           component: GoodsDetail
         },{
+          path: 'killGoods/:id',
+          name: 'KillGoodsDetail',
+          component: KillGoodsDetail
+        }, {
           path: 'orderConfirm',
           name: 'OrderConfirm',
           component: OrderConfirm,
+          meta: {
+            requireLogin:true,
+          },
+        },
+        {
+          path: 'killOrderConfirm',
+          name: 'KillOrderConfirm',
+          component: KillOrderConfirm,
           meta: {
             requireLogin:true,
           },

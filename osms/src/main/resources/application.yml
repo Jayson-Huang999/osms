@@ -18,8 +18,8 @@ spring:
 
   mail:
     host: smtp.qq.com
-    username: 2508664769@qq.com
-    password: lmsuwgikkvgbdjcf
+    username: 2256734557@qq.com
+    password: wziyekyqyupndhhd
     port: 587
     default-encoding: UTF-8
     properties:
@@ -34,9 +34,9 @@ spring:
         debug: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/osms?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true
+    url: jdbc:mysql://localhost:3306/osms?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
     username: root
-    password: 20011112tyl
+    password: hhf977911
   jackson:
     date-format: yyyy-MM-dd hh:mm:ss
     time-zone: GMT+8

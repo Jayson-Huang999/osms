@@ -538,6 +538,7 @@ export function deleteGoods(id) {
 
 //添加活动
 export function addActivity(data) {
+    console.log(data);
     const res = axios.post('/api/activity/addActivity', data);
     return new Promise((resolve, reject) => {
         res.then((result) => {

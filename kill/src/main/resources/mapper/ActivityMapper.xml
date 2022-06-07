@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.ActivityMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Activity">
+        <id column="id" property="id" />
+        <result column="product_id" property="productId" />
+        <result column="preferentiallevel" property="preferentiallevel" />
+        <result column="starttime" property="starttime" />
+        <result column="endtime" property="endtime" />
+        <result column="quantity" property="quantity" />
+        <result column="remain" property="remain" />
+        <result column="status" property="status" />
+    </resultMap>
+    <update id="decStock">
+        update osms_activity set remain=remain-1 where id = #{activityId}
+    </update>
+
+</mapper>

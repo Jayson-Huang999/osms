@@ -20,8 +20,8 @@
         <result column="is_deleted" property="deleted"/>
     </resultMap>
     <insert id="addUser">
-        insert into osms_user(username,password,phone,email,role,score,level,createtime,
-                              is_deleted,nickname) values (#{username},#{password},#{phone},#{email}, 1, 0, 0, #{createtime},0,#{nickname})
+        insert into osms_user(username,password,salt,phone,email,role,score,level,createtime,
+                              is_deleted,nickname) values (#{username},#{password},#{salt},#{phone},#{email}, 1, 0, 0, #{createtime},0,#{nickname})
     </insert>
     <update id="updateMessage">
         update osms_user set headimage = #{image}, sex = #{sex}, updatetime = #{dateTime}, nickname = #{nickname}, phone = #{phone}, username = #{username} where id = #{id}
@@ -58,6 +58,9 @@
     </select>
     <select id="getInfoByEmail" resultType="java.util.Map">
         select id,username from osms_user where email = #{email} and is_deleted = 0
+    </select>
+    <select id="getSaltByPhone" resultType="java.lang.String">
+        select salt from osms_user where phone = #{phone} and is_deleted = 0
     </select>
 
 

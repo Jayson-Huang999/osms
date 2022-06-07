@@ -223,8 +223,8 @@ export default {
           url: "/api/user/updatePwd",
           data: {
             id: this.id,
-            oldPwd: this.oldPwd,
-            newPwd: this.newPwd
+            oldPwd: "12"+this.oldPwd+"89",
+            newPwd:"12"+ this.newPwd+"89"
           }
         }).then(res => {
           console.info(res.data.data.msg)

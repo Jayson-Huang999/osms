@@ -227,15 +227,17 @@ public class UserController {
     @RequestMapping(value = "/updatePwd",method = RequestMethod.POST)
     @ResponseBody
     public JsonResponse updateLoginInfo(@RequestBody Map requestmap) {
-        String oldPwd = (String) requestmap.get("oldPwd");
-        String newPwd = (String) requestmap.get("newPwd");
+
         Integer id =(Integer) requestmap.get("id");
         User user = userService.getById(id.longValue());
+        String salt = user.getSalt();
+        int length = salt.length();
+        String oldPwd = MD5Utils.MD5Encode(salt.charAt(0)+salt.charAt(length-3)+(String) requestmap.get("oldPwd")+salt.charAt(2)+salt.charAt(length-1));
+        String newPwd = MD5Utils.MD5Encode(salt.charAt(0)+salt.charAt(length-3)+(String) requestmap.get("newPwd")+salt.charAt(2)+salt.charAt(length-1));
         Map<String,String> map = new HashMap<>();
         if (user.getPassword().equals(oldPwd)) {
             LocalDateTime dateTime = LocalDateTime.now();
-            String password = MD5Utils.MD5Encode(newPwd);
-            userService.updateLoginInfo( password, id.longValue(), dateTime);
+            userService.updateLoginInfo( newPwd, id.longValue(), dateTime);
             map.put("msg","密码修改成功");
         } else {
             map.put("msg","密码验证出错");
@@ -249,12 +251,16 @@ public class UserController {
     @RequestMapping(value = "/findPwd",method = RequestMethod.POST)
     @ResponseBody
     public JsonResponse findPwd(@RequestBody Map requestmap) {
-        String password = (String) requestmap.get("password");
         //Long id = (Long)  requestmap.get("id");
         Long id =((Integer) requestmap.get("id")).longValue();
+        User user = userService.getById(id);
+        String salt = user.getSalt();
+        int length = salt.length();
+        String password= MD5Utils.MD5Encode(salt.charAt(0)+salt.charAt(length-3)+(String) requestmap.get("password")+salt.charAt(2)+salt.charAt(length-1));
+
         Map<String,String> map = new HashMap<>();
         LocalDateTime dateTime = LocalDateTime.now();
-        userService.updateLoginInfo( MD5Utils.MD5Encode(password), id.longValue(), dateTime);
+        userService.updateLoginInfo( password, id.longValue(), dateTime);
         map.put("msg","密码修改成功");
 //        return JsonResponse.success(map).setMessage("true");
         return JsonResponse.success(map);
@@ -270,7 +276,10 @@ public class UserController {
         String phone = (String) requestmap.get("phone");
         String password = (String) requestmap.get("password");
         System.out.println(phone +","+password);
-        Long id = userService.login(phone,MD5Utils.MD5Encode(password));
+        String salt=userMapper.getSaltByPhone(phone);
+        System.out.println(salt);
+        int length = salt.length();
+        Long id = userService.login(phone,MD5Utils.MD5Encode(salt.charAt(0)+salt.charAt(length-3)+password+salt.charAt(2)+salt.charAt(length-1)));
         System.out.println(id);
         Map<String,Object> map = new HashMap<>();
         User user = userService.getById(id);
@@ -314,7 +323,10 @@ public class UserController {
             User user = new User();
             user.setNickname(nickname);
             user.setUsername(username);
-            user.setPassword(MD5Utils.MD5Encode(password));
+            String salt = SendCodeUtils.getRandomString((int)Math.random()*(20-10)+10);
+            int length = salt.length();
+            user.setSalt(salt);
+            user.setPassword(MD5Utils.MD5Encode(salt.charAt(0)+salt.charAt(length-3)+password+salt.charAt(2)+salt.charAt(length-1)));
             user.setPhone(phone);
             user.setEmail(email);
             user.setCreatetime(dateTime);

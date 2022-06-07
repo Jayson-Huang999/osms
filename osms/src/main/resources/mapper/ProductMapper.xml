@@ -47,7 +47,8 @@
         select *,osms_specification.id as sid,osms_specification.name as sname,osms_image.id as iid,osms_product.seller_id as sellerId
         from osms_product,osms_specification,osms_image
         where osms_product.is_deleted &lt;&gt; 1 and osms_product.id=#{id}
-        and osms_product.id=osms_specification.product_id and osms_product.id=osms_image.product_id
+          and osms_product.id=osms_specification.product_id and osms_product.id=osms_image.product_id
+
     </select>
     <select id="getProductInfoByCategoryID" resultType="java.util.Map">
         select osms_product.id,osms_product.name,url,
@@ -121,5 +122,35 @@
     </select>
     <select id="getProductStock" resultType="java.util.Map">
         select osms_specification.id,stock from osms_product join osms_specification on osms_product.id=product_id where osms_product.id=#{id}
+    </select>
+    <resultMap id="KillProductInfoMap" type="com.example.mybatisplus.model.domain.Product" extends="BaseResultMap">
+        <collection property="images" ofType="com.example.mybatisplus.model.domain.Image">
+            <id column="iid" property="id" />
+            <result column="product_id" property="productId" />
+            <result column="url" property="url" />
+        </collection>
+        <collection property="specs" ofType="com.example.mybatisplus.model.domain.Specification">
+            <id column="sid" property="id" />
+            <result column="sname" property="name" />
+            <result column="sproduct_id" property="productId" />
+            <result column="simg" property="img" />
+            <result column="ssize" property="size" />
+            <result column="sprice" property="price" />
+            <result column="sstock" property="stock" />
+            <result column="sgoodsid" property="goodsId"/>
+        </collection>
+    </resultMap>
+    <select id="getKillProductInfoByID" resultMap="KillProductInfoMap">
+        select osms.osms_product.id as id,osms.osms_product.seller_id as seller_id,osms.osms_product.brand_id as brand_id,
+               osms.osms_product.category_id as category_id,osms.osms_product.`name` as name,osms.osms_product.describ as describ,
+               osms.osms_product.`status` as `status`,osms.osms_product.createtime as createtime,osms.osms_product.updatetime as
+                   updatetime,osms.osms_product.is_deleted as is_deleted,osms_image.id as iid,osms_image.product_id
+                   as product_id,osms_image.url as url,osms_kill_goods.specification_id as sid,osms_specification.name
+                   as sname,osms_specification.product_id as sproduct_id,osms_specification.img as simg,
+               osms_specification.size as ssize,osms_specification.price as sprice,osms_kill_goods.stock as sstock,
+               osms_kill_goods.id as sgoodsid
+        from osms_product,osms_specification,osms_image,osms_kill_goods
+        where osms_product.is_deleted != 1 and osms_product.id=#{id} and osms_kill_goods.product_id=#{id}
+          and osms_kill_goods.specification_id=osms_specification.id and osms_image.product_id=#{id}
     </select>
 </mapper>

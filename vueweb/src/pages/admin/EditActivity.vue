@@ -15,9 +15,9 @@
           <th>商品名称</th>
           <th>活动折扣</th>
           <th>活动数量</th>
-          <th>库存数量</th>
           <th>开始时间</th>
           <th>结束时间</th>
+          <th>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -26,7 +26,6 @@
           <td>{{ item.productName }}</td>
           <td>{{ item.preferentiallevel }}%</td>
           <td>{{ item.remain }}</td>
-          <td>{{ item.quantity }}</td>
           <td>{{ convertDate(new Date(item.starttime)) }}</td>
           <td>{{ convertDate(new Date(item.endtime)) }}</td>
           <td>
@@ -175,7 +174,7 @@ export default {
       tbody {
         tr {
           td {
-            max-width: 100px;
+            max-width: 60px;
             min-width: 30px;
             text-align: center;
 

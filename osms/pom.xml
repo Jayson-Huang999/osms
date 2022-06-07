@@ -171,6 +171,13 @@
             <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
             <version>2.1.0.RELEASE</version>
         </dependency>
+
+        <!--        redission-->
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.6.1</version>
+        </dependency>
     </dependencies>
 
     <build>

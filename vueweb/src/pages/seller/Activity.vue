@@ -18,13 +18,22 @@
           </li>
         </ul>
       </div>
-      <div class="inputBox">
+<!--      <div class="inputBox">
         <span>总库存：</span>
         <span class="val">{{ totalNum }}</span>
-      </div>
+      </div>-->
       <div class="inputBox">
-        <span>活动数量：</span>
-        <TextInput placeholder="请输入活动数量" v-model="activityNum" :initText="activityNum"/>
+        <span class="verTop">规格详情：</span>
+        <ul>
+          <li v-for="(item,index) in specs" :key="index" style="width: 186%;">
+            <span class="activity_lable">名称：</span>
+            <input type="text" readonly="readonly" class="activity_name" v-model.trim.number="item.name"/>
+            <span class="activity_lable">尺寸：</span><input type="text" readonly="readonly" class="activity_text" v-model.trim.number="item.size"/>
+            <span class="activity_lable" >价格：</span><input type="text" readonly="readonly" class="activity_text" v-model.trim.number="item.price"/>
+            <span class="activity_lable">库存量：</span><input type="text" readonly="readonly" class="activity_text" v-model.trim.number="item.stock"/>
+            <span class="activity_lable">规格数量：</span><input type="text"  class="activity_input" v-model.trim.number="item.num" @blur="checkNum(item.id)"/>
+          </li>
+        </ul>
       </div>
       <div class="inputBox">
         <span>折扣(%)：</span>
@@ -74,16 +83,37 @@ export default {
       activityNum: '',
       preferentiallevel: '',
       startTime: '',
-      endTime: ''
+      endTime: '',
+      specs: [{
+        id: -1,
+        productId:-1,
+        name: '默认',
+        size: 0,
+        stock: 0,
+        price: 0,
+        checked:false,
+        num:0
+      }],
     }
   },
   methods: {
-    addActivity() {
-      if (this.totalNum<this.activityNum){
-        alert("活动商品数量不可大于总库存数！");
-        this.activityNum='';
+    checkNum(specId){
+      var spec=this.specs.find(item=>item.id==specId);
+      console.log(spec);
+      if(spec.num<1){
+        alert("规格数量必须大于0");
+        this.specs.find(item=>item.id==specId).num=null;
         return;
       }
+      if(spec.num>spec.stock){
+        alert("规格数量不可大于库存");
+        this.specs.find(item=>item.id==specId).num=null;
+        return;
+      }
+      this.specs.find(item=>item.id==specId).checked=true;
+    },
+
+    addActivity() {
       if (this.preferentiallevel<=0){
         alert("活动折扣不可小等于0！");
         this.preferentiallevel='';
@@ -100,8 +130,8 @@ export default {
         starttime:this.startTime,
         endtime:this.endTime,
         quantity:this.totalNum,
-        remain:this.activityNum,
-        status:0
+        status:0,
+        specsInfo:this.specs
       }).then((e)=>{
         console.log(e);
         alert(e);
@@ -120,11 +150,12 @@ export default {
       this.productId=this.$route.params.id;
       this.productName = data.name;
       this.imageUrl = data.images[0].url;
+      this.specs = data.specs
       this.activityNum = '';
       this.preferentiallevel = '';
       this.startTime = '';
       this.endTime = '';
-      console.log(data);
+      console.log(data.specs);
     }).catch((e) => {
       alert(e);
     });
@@ -161,13 +192,6 @@ export default {
     .inputBox {
       margin-bottom: 30px;
 
-      span {
-        width: 90px;
-        display: inline-block;
-        color: @fontDefaultColor;
-        font-weight: 600;
-      }
-
       .tips {
         font-weight: normal;
         width: auto;
@@ -175,7 +199,48 @@ export default {
         position: relative;
         left: 3px;
       }
-
+      .activity_button{
+        margin-left: 40px;
+        display: inline-block;
+        background-color: #337da4;
+        color: white;
+        border: none;
+        width: 100px;
+        height: 30px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .activity_text{
+        width: 60px;
+        font-weight: 500;
+        font-size: 14px;
+        color: #7d7d7d;
+        border:none;
+      }
+      .activity_input{
+        width: 60px;
+        font-weight: 500;
+        font-size: 14px;
+        color: #7d7d7d;
+      }
+      .activity_lable{
+        margin-left: 40px;
+        width: 120px;
+        height: 30px;
+      }
+      .activity_name{
+        width: auto;
+        font-weight: 500;
+        font-size: 14px;
+        color: #7d7d7d;
+        border:none;
+      }
+      input{
+        width: 100px;
+        font-weight: 500;
+        font-size: 14px;
+        color: @fontDeepColor;
+      }
       .val {
         width: auto;
         font-weight: 500;

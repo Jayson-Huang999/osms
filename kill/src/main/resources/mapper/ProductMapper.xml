@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.ProductMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.Product">
+        <id column="id" property="id" />
+        <result column="seller_id" property="sellerId" />
+        <result column="brand_id" property="brandId" />
+        <result column="category_id" property="categoryId" />
+        <result column="name" property="name" />
+        <result column="describ" property="describ" />
+        <result column="status" property="status" />
+        <result column="createtime" property="createtime" />
+        <result column="updatetime" property="updatetime" />
+        <result column="is_deleted" property="deleted" />
+    </resultMap>
+    <resultMap id="KillProductInfoMap" type="com.example.mybatisplus.model.domain.Product" extends="BaseResultMap">
+        <collection property="images" ofType="com.example.mybatisplus.model.domain.Image">
+            <id column="iid" property="id" />
+            <result column="product_id" property="productId" />
+            <result column="url" property="url" />
+        </collection>
+        <collection property="specs" ofType="com.example.mybatisplus.model.domain.Specification">
+            <id column="sid" property="id" />
+            <result column="sname" property="name" />
+            <result column="sproduct_id" property="productId" />
+            <result column="simg" property="img" />
+            <result column="ssize" property="size" />
+            <result column="sprice" property="price" />
+            <result column="sstock" property="stock" />
+        </collection>
+    </resultMap>
+    <select id="getKillProductInfoByID" resultMap="KillProductInfoMap">
+        select osms.osms_product.id as id,osms.osms_product.seller_id as seller_id,osms.osms_product.brand_id as brand_id,
+               osms.osms_product.category_id as category_id,osms.osms_product.`name` as name,osms.osms_product.describ as describ,
+               osms.osms_product.`status` as `status`,osms.osms_product.createtime as createtime,osms.osms_product.updatetime as
+                   updatetime,osms.osms_product.is_deleted as is_deleted,osms_image.id as iid,osms_image.product_id
+                   as product_id,osms_image.url as url,osms_kill_goods.specification_id as sid,osms_specification.name
+                   as sname,osms_specification.product_id as sproduct_id,osms_specification.img as simg,
+               osms_specification.size as ssize,osms_specification.price as sprice,osms_kill_goods.stock as sstock
+        from osms_product,osms_specification,osms_image,osms_kill_goods
+        where osms_product.is_deleted != 1 and osms_product.id=#{id} and osms_kill_goods.product_id=#{id}
+          and osms_kill_goods.specification_id=osms_specification.id and osms_image.product_id=#{id}
+    </select>
+    <select id="getKillProductStock" resultType="java.util.Map">
+        select osms_kill_goods.specification_id as id,osms_kill_goods.stock as stock from osms_kill_goods,osms_activity
+        where osms_kill_goods.product_id=#{id} and osms_kill_goods.activity_id=osms_activity.id and osms_activity.status!=0
+    </select>
+
+</mapper>

@@ -548,7 +548,7 @@ export default {
       }
 
       .numInput {
-        width: 30px;
+        width: 20px;
         text-align: center;
         border: none;
         border-bottom: 2px solid @mainColor;

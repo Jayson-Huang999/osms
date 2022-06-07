@@ -58,7 +58,7 @@
                 <span class="time">{{ m[index] }}</span>
                 <span>:</span>
                 <span class="time">{{ s[index] }}</span>
-                <div class="buyBtn" @click="navTo('/mall/goods/'+item.product_id)">立即抢购</div>
+                <div class="buyBtn" @click="navTo('/mall/killGoods/'+item.product_id)">查看详情</div>
               </div>
               <!--<div class="buyBtn" @click="navTo('/mall/goods/'+item.id)">立即抢购</div>-->
             </div>
@@ -107,55 +107,6 @@
         </el-carousel>
       </div>
     </section>
-    <!--<section class="maker section">-->
-      <!--<SectionHeader title="品牌制造商" tips="工厂直达消费者，剔除品牌溢价" moreText="更多制造商>"/>-->
-      <!--<div class="content">-->
-        <!--<ZoomImg imgSrc="http://yanxuan.nosdn.127.net/0266209ded1751f599fe0dc21bb33e02.jpg" class="left">-->
-          <!--<div class="makerInfo" slot="otherEle">-->
-            <!--<p class="large">Adidas制造商</p>-->
-            <!--<hr/>-->
-            <!--<p class="small">35元起</p>-->
-          <!--</div>-->
-        <!--</ZoomImg>-->
-        <!--<ZoomImg imgSrc="http://yanxuan.nosdn.127.net/7cd0c8ed77da498090fb67c288ef05be.jpg" class="center">-->
-          <!--<div class="makerInfo" slot="otherEle">-->
-            <!--<p class="large">UGG制造商</p>-->
-            <!--<hr/>-->
-            <!--<p class="small">129元起</p>-->
-          <!--</div>-->
-        <!--</ZoomImg>-->
-        <!--<div class="right">-->
-          <!--<ZoomImg imgSrc="http://yanxuan.nosdn.127.net/d824afe357e61fbee097412c5894c6ce.jpg">-->
-            <!--<div class="makerInfo" slot="otherEle">-->
-              <!--<p class="large">新秀丽制造商</p>-->
-              <!--<hr/>-->
-              <!--<p class="small">49元起</p>-->
-            <!--</div>-->
-          <!--</ZoomImg>-->
-          <!--<ZoomImg imgSrc="http://yanxuan.nosdn.127.net/cf5f4a0d110ca17b9e0a80e6f7e6184b.jpg">-->
-            <!--<div class="makerInfo" slot="otherEle">-->
-              <!--<p class="large">MUJI制造商</p>-->
-              <!--<hr/>-->
-              <!--<p class="small">12.9元起</p>-->
-            <!--</div>-->
-          <!--</ZoomImg>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</section>-->
-    <!--<section class="typeSection section" v-for="(item,index) in typeList.slice(1)" :key="item.id">-->
-      <!--<SectionHeader :title="item.name" tips="" moreText="查看更多>" @click.native="selectType(item.id)"/>-->
-      <!--<ul class="content">-->
-        <!--<GoodsItem-->
-          <!--v-for="(item,index) in filterGoodsByType(item.id).slice(0,4)"-->
-          <!--:style="{marginRight: (index+1)%4===0?'0px':'25px'}"-->
-          <!--:key="+item.id"-->
-          <!--:id="item.id"-->
-          <!--:url="item.url"-->
-          <!--:name="item.name"-->
-          <!--:minprice="item.minprice"-->
-        <!--/>-->
-      <!--</ul>-->
-    <!--</section>-->
   </div>
 </template>
 

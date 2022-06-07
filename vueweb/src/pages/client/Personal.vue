@@ -6,6 +6,7 @@
       <li :class="{selected:curPath==='/mall/personal/myOrder'}" @click="navTo('/mall/personal/myOrder')">我的订单</li>
       <li :class="{selected:curPath==='/mall/personal/myData'}" @click="navTo('/mall/personal/myData')">修改资料</li>
       <li :class="{selected:curPath==='/mall/personal/myAddress'}" @click="navTo('/mall/personal/myAddress')">我的地址</li>
+      <li :class="{selected:curPath==='/mall/personal/myAddress'}" @click="navTo('/mall/show/index')">返回首页</li>
     </ul>
     <div class="content">
       <router-view></router-view>

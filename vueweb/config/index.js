@@ -19,6 +19,14 @@ module.exports = {
           "^/api": "/api"
         }
       },
+      '/kill': {
+        target: 'http://localhost:8808',
+        // target: 'http://192.168.101.163:8888',
+        changeOrigin: true,
+        pathRewrite: {
+          "^/kill": "/kill"
+        }
+      },
       '/image': {
         target: 'http://localhost:8888',
         // target: 'http://192.168.101.163:8888',

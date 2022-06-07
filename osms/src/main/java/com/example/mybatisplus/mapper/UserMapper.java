@@ -44,5 +44,6 @@ public interface UserMapper extends BaseMapper<User> {
     void removeById(Long id);
 
     void updateUserScore(Long user_id, Long score);
-    
+
+    String getSaltByPhone(String phone);
 }

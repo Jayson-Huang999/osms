@@ -59,6 +59,7 @@ public class OrdersController {
             } else {
                 mapList = ordersMapper.getOrders(user_id, status);
             }
+            //获取订单是否评论
             for (Map<String, Object> map : mapList) {
                 QueryWrapper<Comments> wrapper = new QueryWrapper<>();
                 wrapper.lambda().eq(Comments::getOrderId, map.get("order_id"));
@@ -111,6 +112,7 @@ public class OrdersController {
     @ResponseBody
     @CrossOrigin
     public JsonResponse generateOrders(@RequestBody List<Orders> ordersList){
+        System.out.println("orderList:"+ordersList.toString());
         for(Orders orders:ordersList) {
             orders.setCreatetime(LocalDateTime.now());
         }
@@ -121,6 +123,7 @@ public class OrdersController {
         }
         return JsonResponse.success(orderIdList);
     }
+
     //更新订单状态
     @RequestMapping(value = "/updateOrdersStatus", method = RequestMethod.PUT)
     @ResponseBody

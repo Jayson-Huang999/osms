@@ -2,7 +2,7 @@
   <div class="Mall">
     <header>
       <div class="container clear">
-        <span class="title" @click="navTo('/mall')">MoreMall 一站式选购平台</span>
+        <span class="title" @click="navTo('/mall')">OSMS 一站式选购平台</span>
         <NoticeList :notices="notices"/>
         <div class="right" v-if="clientToken">
           <span class="name">欢迎您，{{clientName}}</span>
@@ -19,7 +19,7 @@
       <div class="container">
         <router-view></router-view>
       </div>
-      <div class="fixedAd">
+<!--      <div class="fixedAd">
         <img src="../../assets/img/index2.gif" alt="" />
         <ul class="fixedList">
           <li>
@@ -39,7 +39,7 @@
             <span>回顶部</span>
           </li>
         </ul>
-      </div>
+      </div>-->
     </div>
     <div class="bottomInfo">
       <div class="container">
@@ -49,8 +49,8 @@
           <span><i class="iconfont icon-fabulous" />用户反馈</span>
         </div>
         <div class="intro footerItem">
-          <p class="title">何为MoreMall</p>
-          <p class="intro-p">MoreMall原创生活类电商品牌，秉承网易一贯的严谨态度，我们深入世界各地，从源头全程严格把控商品生产环节，力求帮消费者甄选到优质的商品</p>
+          <p class="title">何为OSMS</p>
+          <p class="intro-p">OSMS原创生活类电商品牌，秉承网易一贯的严谨态度，我们深入世界各地，从源头全程严格把控商品生产环节，力求帮消费者甄选到优质的商品</p>
           <div>
             关注我们：
             <img src="http://yanxuan.nosdn.127.net/60068701f3a380911f237c26c91b39d0.png" alt=""/>
@@ -78,7 +78,7 @@
           </li>
           <li>
             <img src="//yanxuan.nosdn.127.net/e72ed4de906bd7ff4fec8fa90f2c63f1.png" alt="" />
-            <span>XX品质保证</span>
+            <span>品质保证</span>
           </li>
         </ul>
         <div class="footerBottom">
@@ -93,7 +93,7 @@
             <li>搜索推荐</li>
             <li>友情链接</li>
           </ul>
-          <p>XX公司版权所有 © 1996-2018   食品经营许可证：XXXXXXXXXXXXXXXXX</p>
+          <p>OSMS公司版权所有 © 2022-2025   食品经营许可证：XXXXXXXXXXXXXXXXX</p>
         </div>
       </div>
     </footer>

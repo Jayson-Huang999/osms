@@ -1,7 +1,7 @@
 <template>
   <div class="AdminLogin" :style="{width:width+'px',height:height+'px'}">
     <div class="content">
-      <h3>MoreMall</h3>
+      <h3>OSMS</h3>
       <P>后台管理系统</P>
       <input ref="account" type="text" placeholder="账号"/>
       <input ref="pwd" type="password" placeholder="密码"/>

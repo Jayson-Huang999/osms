@@ -51,4 +51,6 @@ public interface ProductMapper extends BaseMapper<Product> {
     List<Map<String, Object>> getAllProductInfo();
     @MapKey("id")
     Map<String,Object> getProductStock(Long id);
+
+    Product getKillProductInfoByID(Long id);
 }

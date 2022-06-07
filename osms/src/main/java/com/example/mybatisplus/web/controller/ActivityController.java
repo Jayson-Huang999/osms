@@ -4,16 +4,24 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.mybatisplus.common.JsonResponse;
 import com.example.mybatisplus.mapper.ActivityMapper;
+import com.example.mybatisplus.model.Entity.SpecsInfo;
 import com.example.mybatisplus.model.domain.Activity;
+import com.example.mybatisplus.model.Entity.ActivityInfo;
+import com.example.mybatisplus.model.domain.KillGoods;
 import com.example.mybatisplus.model.domain.Product;
 import com.example.mybatisplus.service.ActivityService;
+import com.example.mybatisplus.service.KillGoodsService;
 import com.example.mybatisplus.service.ProductService;
+import org.redisson.api.RSemaphore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +48,10 @@ public class ActivityController {
     private ActivityMapper activityMapper;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private KillGoodsService killGoodsService;
+
+
 
     /**
      * 描述：根据Id 查询
@@ -78,9 +90,29 @@ public class ActivityController {
      */
     @RequestMapping(value = "/addActivity", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResponse addActivity(@RequestBody Activity activity) throws Exception {
-        System.out.println(activity);
-        activityService.save(activity);
+    public JsonResponse addActivity(@RequestBody ActivityInfo activityInfo) throws Exception {
+        //System.out.println(activityInfo);
+        //activityService.save(activityInfo.getActivity());
+        List<SpecsInfo> specsInfos=activityInfo.getSpecsInfo();
+        Long preferentiallevel=activityInfo.getPreferentiallevel();
+        int number=0;
+        for(SpecsInfo item:specsInfos){
+            if(item.getChecked()!=null){
+                number+=item.getNum();
+            }
+        }
+        Activity activity=new Activity(activityInfo.getProductId(),preferentiallevel,
+                activityInfo.getStarttime(),activityInfo.getEndtime(),number,number,activityInfo.getStatus());
+        activityMapper.insert(activity);
+        Long activityId=activity.getId();
+        System.out.println("插入数据的id:"+ activityId.toString());
+        for(SpecsInfo item:specsInfos) {
+            if (item.getChecked()!=null) {
+                BigDecimal price=(BigDecimal) item.getPrice().multiply(new BigDecimal((float)preferentiallevel/100));
+                System.out.println(price);
+                killGoodsService.save(new KillGoods(item.getProductId(), (long) activityId, item.getId(), item.getNum(), price));
+            }
+        }
         return JsonResponse.success(null).setCode(0).setMessage("活动添加成功！");
     }
 
@@ -88,7 +120,10 @@ public class ActivityController {
     @RequestMapping(value = "/getActivityProducts", method = RequestMethod.GET)
     @ResponseBody
     public JsonResponse getActivityProducts() {
+       //商品信息加库存
+        activityService.updateKillGoodsInfo();
         return JsonResponse.success(activityMapper.getActivityProducts());
+
     }
 
     //管理员审核活动

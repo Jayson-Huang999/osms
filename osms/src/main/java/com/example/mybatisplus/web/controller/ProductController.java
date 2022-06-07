@@ -135,6 +135,19 @@ public class ProductController {
         return JsonResponse.success(show);
     }
 
+
+    /**
+     * 描述:获取所有的商品种类数据
+     *
+     */
+    @RequestMapping(value = "/getKillProductInfoByID", method = RequestMethod.GET)
+    @ResponseBody
+    @CrossOrigin
+    public JsonResponse getKillProductInfoByID(@RequestParam Long id){
+        Product product=productMapper.getKillProductInfoByID(id);
+        System.out.println("product:====="+product);
+        return JsonResponse.success(product).setCode(0);
+    }
     /**
      * 描述:获取所有的商品种类数据
      *
@@ -144,7 +157,7 @@ public class ProductController {
     @CrossOrigin
     public JsonResponse getProductInfoByID(@RequestParam Long id){
         Product product=productMapper.getProductInfoByID(id);
-        System.out.println(product);
+        System.out.println("product:====="+product);
         return JsonResponse.success(product).setCode(0);
     }
 

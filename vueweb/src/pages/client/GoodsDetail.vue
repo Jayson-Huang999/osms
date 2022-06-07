@@ -283,6 +283,7 @@
             getGoodsInfo(id) {
                 const res = getGoodsInfo(id);
                 res.then((data) => {
+                    //console.log(data);
                     this.goodsImg = data.specs[0].img;
                     this.goodsName = data.name;
                     this.goodsDesc = data.describ;

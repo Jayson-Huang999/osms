@@ -187,26 +187,9 @@
 //        strategy.setEntityLombokModel(true);//启用lombok注解
 //        strategy.setChainModel(true);//启用lombok链式注解
 ////        strategy.setInclude("admin");
-////        strategy.setInclude("osms_activity");
-////        strategy.setInclude("osms_address");
-////        strategy.setInclude("osms_replies");
-////        strategy.setInclude("osms_brand");
-////        strategy.setInclude("osms_cart_product");
-////        strategy.setInclude("osms_category");
-////        strategy.setInclude("osms_dict");
-////        strategy.setInclude("osms_favorite");
-////        strategy.setInclude("osms_image");
-////        strategy.setInclude("osms_orders");
-////        strategy.setInclude("osms_payinfo");
-////        strategy.setInclude("osms_preferentiallevel");
-////        strategy.setInclude("osms_product");
-//        strategy.setInclude("osms_seller");
-////        strategy.setInclude("osms_specification");
-////        strategy.setInclude("osms_user");
-////        strategy.setInclude("osms_admins");
-////        strategy.setInclude("osms_messages");
-////        strategy.setInclude("osms_comments");
-////        strategy.setInclude("osms_replies");
+//        strategy.setInclude("osms_kill_goods");
+//  //      strategy.setInclude("osms_kill_orders");
+//
 //
 //        strategy.setTablePrefix("osms_");//去表前缀配置
 //

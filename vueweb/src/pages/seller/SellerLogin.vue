@@ -1,7 +1,7 @@
 <template>
   <div class="SellerLogin" :style="{width:width+'px',height:height+'px'}">
     <div class="content">
-      <h3>MoreMall</h3>
+      <h3>OSMS</h3>
       <P>店铺后台管理系统</P>
       <div class="tag">
         <span @click="setIndex(0)" :class="{selected:curIndex===0}">登录</span>

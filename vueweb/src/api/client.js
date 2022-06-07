@@ -138,6 +138,30 @@ export function hasStored(id,pid,token) {
   })
 }
 
+//获得秒杀商品详情页信息
+
+export function getKillGoodsInfo(id) {
+  const res = axios.get('/api/product/getKillProductInfoByID?id=' + id);
+  return new Promise((resolve, reject) => {
+    res.then((result) => {
+      if (result.status === 200) {
+        return result.data;
+      } else {
+        reject(result.status)
+      }
+    }).then((json) => {
+      if (json.code === 0) {
+        resolve(json.data);
+      } else {
+        reject(json.message);
+      }
+    })
+        .catch((e) => {
+          reject(e.toString())
+        })
+  })
+}
+
 //获得商品详情页信息
 export function getGoodsInfo(id) {
   const res = axios.get('/api/product/getProductInfoByID?id=' + id);
@@ -210,7 +234,87 @@ export function askGoodsMsg(data) {
       })
   })
 }
-
+//秒杀操作
+export function killGoods(data) {
+  const res = axios.post('/kill/activity/setKill', data,{
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }});
+  return new Promise((resolve, reject) => {
+    res
+        .then((result) => {
+          console.log("result",result)
+          if (result.status === 200) {
+            return result.data;
+          } else {
+            reject(result.status)
+          }
+        })
+        .then((json) => {
+          if (json.code === 0) {
+            resolve(json.data);
+          } else {
+            reject(json.message);
+          }
+        })
+        .catch((e) => {
+          reject(e.toString())
+        })
+  })
+}
+//前端轮询抢购结果
+export function queryKillRes(data){
+  const res = axios.post('/kill/activity/queryKillRes', data,{
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }});
+  return new Promise((resolve, reject) => {
+    res
+        .then((result) => {
+          console.log("result",result)
+          if (result.status === 200) {
+            return result.data;
+          } else {
+            reject(result.status)
+          }
+        })
+        .then((json) => {
+          if (json.code === 0) {
+            resolve(json.data);
+          } else {
+            reject(json.message);
+          }
+        })
+        .catch((e) => {
+          reject(e.toString())
+        })
+  })
+}
+//测试操作
+export function test(data) {
+  const res = axios.post('/kill/test/goodsInfo');
+  return new Promise((resolve, reject) => {
+    res
+        .then((result) => {
+          console.log(result);
+          if (result.status === 200) {
+            return result.data;
+          } else {
+            reject(result.status)
+          }
+        })
+        .then((json) => {
+          if (json.code === 0) {
+            resolve();
+          } else {
+            reject(json.message);
+          }
+        })
+        .catch((e) => {
+          reject(e.toString())
+        })
+  })
+}
 //加入购物车
 export function addToCart(data) {
   const res = axios.post('/api/cartProduct/addToCart', data);
@@ -303,6 +407,33 @@ export function updateActivityRemain(data) {
     })
   })
 }
+
+//商品详情页更新不同规格的库存
+export function getKillGoodsStock(data) {
+  const res = axios.post('/kill/product/getKillGoodsStock', data,{
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }});
+ // console.log("res"+res);
+  return new Promise((resolve, reject) => {
+    res.then((result) => {
+      if (result.status === 200) {
+        return result.data;
+      } else {
+        reject(result.status)
+      }
+    }).then((json) => {
+      if (json.code === 0) {
+        resolve(json.data);
+      } else {
+        reject(json.message);
+      }
+    }).catch((e) => {
+      reject(e.toString())
+    })
+  })
+}
+
 //商品详情页更新不同规格的库存
 export function getProductStock(id) {
   const res = axios.get('/api/product/getProductStock?id='+id);
@@ -370,7 +501,7 @@ export function getOrderByStatus(id, status,token) {
   })
 }
 
-// //获得用户订单列表
+// 获得用户订单列表
 // export function getOrderByState(state,token) {
 //   console.log(state);
 //   console.log(token);
@@ -664,6 +795,33 @@ export function updatePwd(data) {
   })
 }
 
+export function falseToKill(data){
+  const res = axios.post('/kill/activity/falseToKill', data,{
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }});
+  return new Promise((resolve, reject) => {
+    res
+        .then((result) => {
+          if (result.status === 200) {
+            return result.data;
+          } else {
+            reject(result.status)
+          }
+        })
+        .then((json) => {
+          if (json.code === 0) {
+            resolve(json.data);
+          } else {
+            reject(json.message);
+          }
+        })
+        .catch((e) => {
+          reject(e.toString())
+        })
+  })
+}
+
 //结算购物车
 export function generateOrders(data) {
   const res = axios.post('/api/orders/generateOrders', data);
@@ -686,6 +844,31 @@ export function generateOrders(data) {
       .catch((e) => {
         reject(e.toString())
       })
+  })
+}
+
+//秒杀商品结算
+export function generateKillOrders(data) {
+  const res = axios.post('/kill/orders/generateKillOrders', data);
+  return new Promise((resolve, reject) => {
+    res
+        .then((result) => {
+          if (result.status === 200) {
+            return result.data;
+          } else {
+            reject(result.status)
+          }
+        })
+        .then((json) => {
+          if (json.code === 0) {
+            resolve(json.data);
+          } else {
+            reject(json.message);
+          }
+        })
+        .catch((e) => {
+          reject(e.toString())
+        })
   })
 }
 

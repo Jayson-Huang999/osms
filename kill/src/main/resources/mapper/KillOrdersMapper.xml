@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatisplus.mapper.KillOrdersMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.example.mybatisplus.model.domain.KillOrders">
+        <id column="id" property="id" />
+        <result column="goods_id" property="goodsId" />
+        <result column="user_id" property="userId" />
+        <result column="address_id" property="addressId" />
+        <result column="status" property="status" />
+        <result column="price" property="price" />
+        <result column="createTime" property="createTime" />
+    </resultMap>
+    <insert id="addKillOrder">
+        insert into osms_kill_orders(id,goods_id,user_id,address_id,status,price,createTime) values(#{id},#{goodsId},#{userId},#{addressId},1,#{price},#{now})
+    </insert>
+    <select id="getOrdersInfo" resultType="java.util.Map">
+        select user_id as userId,goods_id as goodsId from osms_kill_orders where status!=5
+    </select>
+
+</mapper>

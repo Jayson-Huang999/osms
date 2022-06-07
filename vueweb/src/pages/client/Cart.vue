@@ -43,30 +43,6 @@
                     </div>
                 </li>
             </ul>
-            <!--<ul class="orderList">-->
-            <!--<li v-for="(item,index) in orderList" :key="'order'+item.id">-->
-            <!--<div class="orderDetail">-->
-            <!--<img :src="item.goods.img" alt="商品图片" />-->
-            <!--<div class="goodsName">-->
-            <!--<p @click="navTo('/mall/goods/'+item.goods.id)">{{item.goods.name}}</p>-->
-            <!--<span>{{item.goods.spec}}</span>-->
-            <!--</div>-->
-            <!--<span class="unitPrice">{{'￥'+item.goods.unitPrice}}</span>-->
-            <!--<span class="num">-->
-            <!--<NumberInput -->
-            <!--@changeHandle="numberChange(item.id)" -->
-            <!--:initNum="item.temGoodsNum" -->
-            <!--v-model="item.temGoodsNum" -->
-            <!--:min="1" -->
-            <!--:max="999"-->
-            <!--/>-->
-            <!--</span>-->
-            <!--&lt;!&ndash; <input @change="numberChange(item.id)" type="text" v-model="item.temGoodsNum" min="1" class="numInput" /> &ndash;&gt;-->
-            <!--<span class="amount">{{'￥'+item.amount}}</span>-->
-            <!--<button @click="removeFromCart(item.id)">删除</button>-->
-            <!--</div>-->
-            <!--</li>-->
-            <!--</ul>-->
             <div class="cartFooter">
                 <span>应付金额：</span>
                 <span class="total" v-model="totalAmount">{{'￥'+totalAmount}}</span>

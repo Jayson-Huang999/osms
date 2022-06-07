@@ -50,6 +50,19 @@ public class Activity extends Model<Activity> {
     @TableField(exist = false)
     private String productName;
 
+    public Activity(Long productId, Long preferentiallevel, LocalDateTime starttime, LocalDateTime endtime,Integer quantity, Integer remain, Long status) {
+        this.productId = productId;
+        this.preferentiallevel = preferentiallevel;
+        this.starttime = starttime;
+        this.endtime = endtime;
+        this.quantity = quantity;
+        this.remain = remain;
+        this.status = status;
+    }
+
+    public Activity() {
+    }
+
 
     @Override
     protected Serializable pkVal() {
